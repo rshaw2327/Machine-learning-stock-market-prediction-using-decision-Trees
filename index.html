@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock ML Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>📊 ML Stock Dashboard</h1>
+        <p class="tagline">RSI • MACD • Decision Tree</p>
+        <form method="POST">
+            <input type="text" name="symbol" placeholder="Enter stock (AAPL, GOOG, MSFT)" required>
+            <button type="submit">Predict</button>
+        </form>
+        {% if prediction is not none %}
+        <h2>{{ symbol }}</h2>
+        <p class="prediction">{{ 'Stock likely UP 📈' if prediction == 1 else 'Stock likely DOWN 📉' }}</p>
+        <div class="metrics">
+            <div class="metric-card"><span>Confidence</span><strong>{{ "%.1f"|format(probability * 100) }}%</strong>
+            </div>
+            <div class="metric-card"><span>Model Accuracy</span><strong>{{ "%.1f"|format(accuracy * 100) }}%</strong>
+            </div>
+        </div>
+        <div class="chart-container">
+            {{ chart_html | safe if chart_html else '' }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
